@@ -62,6 +62,38 @@ def main():
     plt.title('Linear (MMQ)')
     plt.legend()
     plt.show()
+    
+    import numpy as np
+
+    def sum_of_squares_linear(x, y, a, b):
+        """
+        Calcula o somatório dos quadrados dos resíduos (SSE)
+        para o modelo linear y_pred = a*x + b.
+        
+        Parâmetros:
+        x (array): Valores de entrada (xi)
+        y (array): Valores reais (yi)
+        a (float): Coeficiente angular
+        b (float): Coeficiente linear
+        
+        Retorna:
+        float: valor do somatório dos quadrados dos resíduos
+        """
+        y_pred = a * x + b
+        residuals = y - y_pred
+        return np.sum(residuals**2)
+    
+    a = mmq.get_a_and_b(xi, yi)[0]
+    b = mmq.get_a_and_b(xi, yi)[1]
+    
+    D_linear = sum_of_squares_linear(xi, yi, a, b)
+    print("Somatório dos quadrados dos resíduos (linear):", D_linear)
+    
+    mse = D_linear / len(xi)  
+    print("Erro Quadrático Médio (MSE):", mse)
+
+    rmse = np.sqrt(mse)
+    print("Raiz do Erro Quadrático Médio (RMSE):", rmse)
 
 if __name__ == "__main__":
     main()

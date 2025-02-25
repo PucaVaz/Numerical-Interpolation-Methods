@@ -1,48 +1,51 @@
-#Separando os valores, ordenados pela temperatura
-xi = df['Temperature'].sort_values()
-yi = df['Revenue']
-
-#Método: MMQ
-import sympy as sy
 import numpy as np
 from sympy.abc import x,y
-import matplotlib.pyplot as plt
 
-def calculate_a(xi,yi):
-    n=len(xi)
-    return (n*np.sum(xi*yi)-np.sum(xi)*np.sum(yi))\
-          /(n*np.sum(xi**2)-np.sum(xi)**2)
+class MMQ():
+    def __init__(self, xi, yi) -> None:
+        self.xi = xi
+        self.yi = yi 
+        self.a, self.b = self.get_a_and_b(xi, yi)
 
-a=calculate_a(xi,yi);a
-
-def calculate_b(xi,yi,a1):
-    n=len(xi)
-    return (np.sum(yi)/n)-a1*(np.sum(xi)/n)
-
-b=calculate_b(xi,yi,a);b
+    def _calculate_a(self,xi,yi):
+        n = len(xi)
+        return (n*np.sum(xi*yi)-np.sum(xi)*np.sum(yi))\
+            /(n*np.sum(xi**2)-np.sum(xi)**2)
 
 
-#MMQ Linear
-y=b+a*x;y
+    def _calculate_b(self,xi,yi,a1):
+        n = len(xi)
+        return (np.sum(yi) / n) - a1 * (np.sum(xi) / n)
 
+    def get_a_and_b(self, xi, yi):
+        a= self._calculate_a(xi,yi)
+        b= self._calculate_b(xi,yi,a)
 
-plt.scatter(x, y, color='red', label='Pontos')
-plt.plot(x, y, label="MMQ Linear")
-plt.title("MMQ Linear")
-plt.xlabel('x')
-plt.ylabel('y')
-plt.legend()
-plt.grid(True)
-plt.show()
+        return a, b 
+    
+    def get_mmq_linear(self):
+        y = self.b + self.a * x 
+        return y
+    
+    def get_mmq_quadratic(self):
+        y = self.b + self.a * x **2
+        return y 
 
-#MMQ Quadrática
-y=b+a*x**2;y
+def main():
+    from src.utils.helpers import load_data
+    df = load_data("data/ice_cream.csv")
 
-plt.scatter(x, y, color='red', label='Pontos')
-plt.plot(x_plot, y_plot, label=title)
-plt.title("MMQ Linear")
-plt.xlabel('x')
-plt.ylabel('y')
-plt.legend()
-plt.grid(True)
-plt.show()
+    # Separating the values, ordered by temperature
+    xi = df['Temperature'].sort_values()
+    yi = df['Revenue']
+
+    mmq = MMQ(xi, yi)
+
+    y_linear = mmq.get_mmq_linear()
+
+    y_quad  = mmq.get_mmq_quadratic()
+    
+    print(f"Linear MMQ Result: {y_linear}, Quadratic MMQ Result: {y_quad}")
+
+if __name__ == "__main__":
+    main()

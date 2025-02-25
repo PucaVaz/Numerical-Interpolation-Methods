@@ -1,0 +1,1 @@
+python -m src.mathImplementations.mmq

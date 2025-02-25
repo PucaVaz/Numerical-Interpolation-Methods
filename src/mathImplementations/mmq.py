@@ -1,5 +1,6 @@
 import numpy as np
 from sympy.abc import x,y
+import matplotlib.pyplot as plt
 
 class MMQ():
     def __init__(self, xi, yi) -> None:
@@ -50,6 +51,17 @@ def main():
     y_quad  = mmq.get_mmq_quadratic()
     
     print(f"Linear MMQ Result: {y_linear}, Quadratic MMQ Result: {y_quad}")
+
+
+    # Plot the Linear Graphic
+    plt.figure(figsize=(8, 6))
+    plt.scatter(xi, yi, color='blue', label='Dados observados')
+    plt.plot(xi, y_linear, color='red', label='Linha de Regressão')
+    plt.xlabel('Temperature')
+    plt.ylabel('Revenue')
+    plt.title('Regressão Linear (MMQ)')
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main()

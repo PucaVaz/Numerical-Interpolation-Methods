@@ -109,7 +109,7 @@ class MMQ():
         """
         y_expr = self.b + self.a * x ** 2
         return y_expr 
-
+    
 def main():
     """
     Função principal que:
@@ -120,6 +120,8 @@ def main():
       - Imprime as expressões simbólicas para os modelos linear e quadrático.
     """
     from src.utils.helpers import load_data
+    import sympy
+
     df = load_data("data/ice_cream.csv")
 
     # Ordena o DataFrame pela coluna "Temperature"
@@ -133,21 +135,21 @@ def main():
     mmq = MMQ(xi, yi)
 
     # Obtém os modelos de MMQ linear e quadrático (expressões simbólicas)
-    y_linear = mmq.get_mmq_linear()
-    y_quad = mmq.get_mmq_quadratic()
+    y_linear_expr = mmq.get_mmq_linear()
+    y_quad_expr = mmq.get_mmq_quadratic()
     
-    print(f"Linear MMQ Result: {y_linear}, Quadratic MMQ Result: {y_quad}")
+    print(f"Linear MMQ Result: {y_linear_expr}, Quadratic MMQ Result: {y_quad_expr}")
 
-    y_linear = mmq.get_mmq_linear()
+    # Converta a expressão simbólica para uma função numérica usando lambdify
+    f_linear = sympy.lambdify(x, y_linear_expr, "numpy")
+    y_linear_values = f_linear(xi)
+    
     # Plot the Linear Graphic
     plt.figure(figsize=(8, 6))
     plt.scatter(xi, yi, color='blue', label='Data Points')
-    plt.plot(xi, y_linear, color='red', label='Linear MMQ')
+    plt.plot(xi, y_linear_values, color='red', label='Linear MMQ')
     plt.xlabel('Temperature')
     plt.ylabel('Revenue')
     plt.title('Linear (MMQ)')
     plt.legend()
     plt.show()
-
-if __name__ == "__main__":
-    main()

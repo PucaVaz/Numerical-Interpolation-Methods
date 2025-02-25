@@ -7,8 +7,12 @@ import matplotlib.pyplot as plt
 # df = pd.read_csv('seu_arquivo.csv')
 
 # Ordene os dados se necessário
-xi = df['Temperature'].sort_values().values
-yi = df['Revenue'].values
+# Ordenar todo o DataFrame pela coluna 'Temperature'
+df_sorted = df.sort_values(by='Temperature')
+
+# Agora, extrair xi e yi do df_sorted
+xi = df_sorted['Temperature'].values
+yi = df_sorted['Revenue'].values
 
 # =============================================================================
 # 1. Selecionando um subconjunto de pontos para evitar polinômio de grau alto

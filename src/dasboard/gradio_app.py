@@ -85,7 +85,6 @@ def generate_newton_plot(num_nodes=6):
     """
     xi, yi = load_and_sort_data()
     
-    # Select interpolation nodes evenly spaced over the data range.
     x_interp = np.linspace(np.min(xi), np.max(xi), num_nodes)
     y_interp = []
     for x_val in x_interp:
@@ -93,19 +92,22 @@ def generate_newton_plot(num_nodes=6):
         y_interp.append(yi[idx])
     y_interp = np.array(y_interp)
     
-    # Create Newton interpolator and evaluate on a fine grid.
+    # Cria interpolador de Newton e avalia em uma grade fina
     interpolator = NewtonInterpolator(x_interp, y_interp)
     x_new = np.linspace(np.min(xi), np.max(xi), 200)
     y_newton = interpolator.get_interpolated_values(x_new)
     
-    # Plot the original data, selected nodes, and the interpolation.
+    # Calcula o erro RMSE usando todos os pontos de dados
+    error = interpolator.get_error(xi, yi)
+    
+    # Plota os dados e a interpolação
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(xi, yi, 'o', label='Dados Originais', alpha=0.5)
     ax.plot(x_interp, y_interp, 'ks', markersize=8, label='Nós Selecionados')
     ax.plot(x_new, y_newton, 'r-', label='Interpolação de Newton')
     ax.set_xlabel("Temperatura")
     ax.set_ylabel("Receita")
-    ax.set_title("Interpolação de Newton")
+    ax.set_title(f"Interpolação de Newton (RMSE: {error:.2f})")
     ax.legend()
     ax.grid(True)
     
@@ -114,18 +116,9 @@ def generate_newton_plot(num_nodes=6):
     return img
 
 def generate_lagrange_plot(num_nodes=6):
-    """
-    Generates a plot using Lagrange's Interpolation.
-
-    Parameters:
-        num_nodes (int): Number of interpolation nodes.
-    
-    Returns:
-        PIL Image: The Lagrange interpolation plot.
-    """
     xi, yi = load_and_sort_data()
     
-    # Select interpolation nodes evenly over the data range.
+    # Seleciona nós de interpolação
     x_interp = np.linspace(np.min(xi), np.max(xi), num_nodes)
     y_interp = []
     for x_val in x_interp:
@@ -133,19 +126,22 @@ def generate_lagrange_plot(num_nodes=6):
         y_interp.append(yi[idx])
     y_interp = np.array(y_interp)
     
-    # Create Lagrange interpolator and evaluate on a fine grid.
+    # Cria interpolador de Lagrange e avalia em uma grade fina
     interpolator = LagrangeInterpolator(x_interp, y_interp)
     x_new = np.linspace(np.min(xi), np.max(xi), 200)
     y_lagrange = interpolator.get_interpolated_values(x_new)
     
-    # Plot the results.
+    # Calcula o erro RMSE usando os pontos do conjunto de dados original
+    error = interpolator.get_error(xi, yi)
+    
+    # Plota os dados e a interpolação
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(xi, yi, 'o', label='Dados Originais', alpha=0.5)
     ax.plot(x_interp, y_interp, 'ks', markersize=8, label='Nós Selecionados')
     ax.plot(x_new, y_lagrange, 'b--', label='Interpolação de Lagrange')
     ax.set_xlabel("Temperatura")
     ax.set_ylabel("Receita")
-    ax.set_title("Interpolação de Lagrange")
+    ax.set_title(f"Interpolação de Lagrange (RMSE: {error:.2f})")
     ax.legend()
     ax.grid(True)
     
@@ -183,7 +179,7 @@ def main():
         label="Selecione o Método Matemático",
     )
     num_nodes_input = gr.Slider(
-        minimum=3, maximum=10, step=1,
+        minimum=3, maximum=20, step=1,
         label="Número de Nós de Interpolação (para Newton/Lagrange)"
     )
     

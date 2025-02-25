@@ -6,11 +6,10 @@ from PIL import Image
 import sympy
 from sympy.abc import x
 
-# Import our math implementations
 from src.mathImplementations.mmq import MMQ
 from src.mathImplementations.newtonInterpol import NewtonInterpolator
 from src.mathImplementations.lagrangeInterpol import LagrangeInterpolator
-from src.utils.helpers import load_data  # Assumes you have this helper to load the CSV
+from src.utils.helpers import load_data 
 
 def fig_to_img(fig):
     """

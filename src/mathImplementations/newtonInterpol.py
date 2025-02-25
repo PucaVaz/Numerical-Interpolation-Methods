@@ -10,6 +10,7 @@ class NewtonInterpolator:
         self.y_nodes = y_nodes
         self.coef = self.newton_divided_differences(x_nodes, y_nodes)
 
+
     def newton_divided_differences(self, x, y):
         """
         Calcula os coeficientes do polinômio de Newton usando diferenças divididas.

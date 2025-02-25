@@ -35,9 +35,13 @@ def main():
     from src.utils.helpers import load_data
     df = load_data("data/ice_cream.csv")
 
-    # Separating the values, ordered by temperature
-    xi = df['Temperature'].sort_values()
-    yi = df['Revenue']
+    # Sorting the DataFrame by the column "Temperature"
+    df_sorted = df.sort_values(by='Temperature')
+
+    # Extracting xi and yi from df_sorted
+    xi = df_sorted['Temperature'].values
+    yi = df_sorted['Revenue'].values
+
 
     mmq = MMQ(xi, yi)
 

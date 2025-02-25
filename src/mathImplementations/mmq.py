@@ -59,7 +59,7 @@ def main():
     plt.plot(xi, y_linear, color='red', label='Linha de Regressão')
     plt.xlabel('Temperature')
     plt.ylabel('Revenue')
-    plt.title('Regressão Linear (MMQ)')
+    plt.title('Linear (MMQ)')
     plt.legend()
     plt.show()
 

@@ -52,11 +52,11 @@ def main():
     
     print(f"Linear MMQ Result: {y_linear}, Quadratic MMQ Result: {y_quad}")
 
-
+    y_linear = mmq.get_mmq_linear()
     # Plot the Linear Graphic
     plt.figure(figsize=(8, 6))
-    plt.scatter(xi, yi, color='blue', label='Dados observados')
-    plt.plot(xi, y_linear, color='red', label='Linha de Regressão')
+    plt.scatter(xi, yi, color='blue', label='Data Points')
+    plt.plot(xi, y_linear, color='red', label='Linear MMQ')
     plt.xlabel('Temperature')
     plt.ylabel('Revenue')
     plt.title('Linear (MMQ)')
